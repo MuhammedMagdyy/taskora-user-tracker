@@ -10,14 +10,14 @@ import { logger } from './utils';
 
     logger.info('Starting user monitoring cron job... ✅');
 
-    cron.schedule('*/10 * * * * *', () => {
+    cron.schedule('0 * * * *', () => {
       logger.info('Running user check... 🔍');
       userService.checkForNewUsers().catch((error) => {
         logger.error(`Error during user check: ${error}`);
       });
     });
 
-    logger.info('Cron job scheduled to run every 10 seconds ✅');
+    logger.info('Cron job scheduled to run every hour ✅');
 
     const shutdown = async () => {
       logger.info('Shutting down gracefully... ⏳');
