@@ -26,11 +26,11 @@ This is a Node.js script digital growth radar, keeping a passionate eye on new u
 
 ## How It Works 🔍
 
-1- The application establishes connections with MySQL and Redis on startup 🌐
-2- A cron job springs into action every hour, hunting for new users ⏰
-3- Compares the current user count with the previously stored count 🧮
-4- Triggers an email notification when new users are discovered 📬
-5- Updates the user count in Redis, ready for the next check 🔁
+1. The application establishes connections with MySQL and Redis on startup 🌐
+2. A cron job springs into action every hour, hunting for new users ⏰
+3. Compares the current user count with the previously stored count 🧮
+4. Triggers an email notification when new users are discovered 📬
+5. Updates the user count in Redis, ready for the next check 🔁
 
 ---
 
