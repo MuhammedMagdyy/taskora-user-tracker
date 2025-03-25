@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "Mohamed Magdy",
-  "license": "ISC",
+  "license": "MIT",
   "description": "A Node.js script notifier that tracks new users in a MySQL database and sends fancy email alerts and Discord notifications when the count increases. Includes Redis for state tracking and cron-based automation.",
   "dependencies": {
     "dotenv": "^16.4.7",
