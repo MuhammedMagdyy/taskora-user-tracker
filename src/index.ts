@@ -1,19 +1,37 @@
 import 'dotenv/config';
-import express from 'express';
-import helmet from 'helmet';
-import { httpRequestLogger, logger } from './utils';
+import cron from 'node-cron';
+import { mysqlClient, redisClient } from './config';
+import { userService } from './services';
+import { logger } from './utils';
 
-const app = express();
-const port = process.env.PORT || 3000;
+(async () => {
+  try {
+    Promise.all([await mysqlClient.connect(), await redisClient.connect()]);
 
-app.use(httpRequestLogger);
-app.use(helmet());
-app.get('/', (_req, res) => {
-  res.send(
-    '<div style="text-align: center; margin-top: 20px;"><h1>Welcome to Taskora User Tracker 🚀</h1></div>',
-  );
-});
+    logger.info('Starting user monitoring cron job... ✅');
 
-app.listen(port, () => {
-  logger.info(`Server is running on ${port}`);
-});
+    cron.schedule('*/10 * * * * *', () => {
+      logger.info('Running user check... 🔍');
+      userService.checkForNewUsers().catch((error) => {
+        logger.error(`Error during user check: ${error}`);
+      });
+    });
+
+    logger.info('Cron job scheduled to run every 10 seconds ✅');
+
+    const shutdown = async () => {
+      logger.info('Shutting down gracefully... ⏳');
+      await mysqlClient.disconnect();
+      await redisClient.disconnect();
+      logger.info('All connections closed. Bye! 👋');
+      process.exit(0);
+    };
+
+    process.on('SIGINT', () => {
+      shutdown().catch((err) => logger.error(`Error during shutdown: ${err}`));
+    });
+  } catch (error) {
+    logger.error(`Error during startup: ${error}`);
+    process.exit(1);
+  }
+})();
