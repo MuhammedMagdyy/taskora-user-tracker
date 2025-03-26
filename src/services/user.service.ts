@@ -13,9 +13,7 @@ export class UserService {
     private readonly mysqlClient: MySQLDatabaseClient,
     private readonly redisClient: RedisDatabaseClient,
     private readonly emailService: EmailService,
-  ) {
-    this.emailService = new EmailService();
-  }
+  ) {}
 
   getUsersCount = async () => {
     const query = `SELECT COUNT(u.uuid) AS taskora_users FROM ${process.env.MYSQL_DATABASE_NAME}.users u;`;
